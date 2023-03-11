@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Authentifier avec js et firebase</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    
+     <!-- -----------------link font awesome--------------- -->
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" 
+     integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
+  </head>
+  <body>
+    <div id="ajout" class="row  needs-validation  bg-success w-50 text-center m-5 justify-content-center"          novalidate>
+      <div class="row my-5">
+        <div class="col-6">
+          <input type="text" class="form-control" id="prenom" placeholder="prenom" required>
+        </div>
+        <div class="col-6">
+          <input type="text" class="form-control" id="nom" placeholder="nom " required="required">
+        </div>
+      </div>
+      <div class="row my-5">
+        <div class="col-6">
+          <input type="date" class="form-control" id="age" placeholder="age" required="required">
+        </div>
+        <div class="col-6">
+          <input type="email" class="form-control" id="mail" placeholder="mail" aria-describedby="inputGroupPrepend" required="required">
+        </div>
+      </div>
+      <div class="row my-5">
+        <div class="col-6">
+          <input type="password" class="form-control" id="password" placeholder="password " required="required">
+        </div>
+        <div class="col-6">
+            <select class="form-select" id="status" placeholder="status" required>
+              <option selected disabled value="">
+     
+              <option>
+                admins
+              </option>
+              <option>
+                users
+              </option>
+              <option>
+                super
+              </option>
+            </option>
+            </select>
+        </div>
+        <!-- <div class="justyfy-content-center"> -->
+         
+       <!-- </div> -->
+      </div>
+      <a href="authentique1.html">
+        <button id="btn" type="submit" class='btn btn-success justify-content-center'>S'inscrire</button>
+      </a>
+    </div>
+
+
+         <!-- js -->
+    <script type="module">
+
+        // Import the functions you need from the SDKs you need
+       import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
+       import { collection, addDoc, getFirestore, getDocs, query } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js"; 
+       // TODO: Add SDKs for Firebase products that you want to use
+       // https://firebase.google.com/docs/web/setup#available-libraries
+      
+       // Your web app's Firebase configuration
+       const firebaseConfig = {
+         apiKey: "AIzaSyDkoxNpCQpSKQJD_xXRAO9jXagLUhf5MSo",
+         authDomain: "authentifier-1ec9c.firebaseapp.com",
+         projectId: "authentifier-1ec9c",
+         storageBucket: "authentifier-1ec9c.appspot.com",
+         messagingSenderId: "75554208435",
+         appId: "1:75554208435:web:ee8add056298184910cec6"
+       };
+
+            const app = initializeApp(firebaseConfig);
+     
+            const db = getFirestore(app);
+      
+      
+    let btn = document.getElementById('btn');
+        btn.addEventListener('click',  () =>{
+       // Add a new document with a generated id.
+          let prenom = document.getElementById('prenom');
+          let nom = document.getElementById('nom');
+          let age = document.getElementById('age');
+          let mail = document.getElementById('mail');
+          let password = document.getElementById('password');
+          let status = document.getElementById('status');
+          
+      addDoc(collection(db, "auto"), {
+         prenom: prenom.value,
+         nom: nom.value,
+         age: age.value,
+         mail: mail.value,
+         password: password.value,
+         status: status.value,
+        })
+         alert('inscription reussie');
+    } );
+    </script>
+</body>
+</html>
