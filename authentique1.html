@@ -45,11 +45,9 @@
         </div>
       </div>
       <div class="row justify-content-center">
-        <a href="authentique.html">
-          <button type="submit" class="btn btn-success" id="connect">
-            Se connecter
-          </button>
-        </a>
+        <button type="submit" class="btn btn-success" id="connect">
+          Se connecter
+        </button>
       </div>
     </form>
 
@@ -64,10 +62,7 @@
         where,
         onSnapshot,
       } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
-      // import {
-      //   getAuth,
-      //   signInWithEmailAndPassword,
-      // } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-auth.js";
+      //  import { getAuth, signInWithEmailAndPassword }  from "https://www.gstatic.com/firebasejs/9.17.2/firebase-auth.js";
 
       const firebaseConfig = {
         apiKey: "AIzaSyDkoxNpCQpSKQJD_xXRAO9jXagLUhf5MSo",
@@ -82,18 +77,14 @@
 
       const db = getFirestore(app);
 
-      // import { collection,  } from "firebase/firestore";
       let tab = [];
       const querySnapshot = await getDocs(collection(db, "auto"));
       querySnapshot.forEach((doc) => {
         tab.push(doc.data());
-        console.log(doc.data().status);
+        console.log(doc.data());
       });
 
-      // let password = document.getElementById('password');
-
-      let connect = document.getElementById("connect");
-      connect.addEventListener("click", connecte);
+      document.getElementById("connect").addEventListener("click", connecte);
       function connecte(e) {
         e.preventDefault();
 
@@ -102,42 +93,29 @@
         let password = document.getElementById("password");
         console.log(password.value);
 
-        const q = query(
-          collection(db, "auto"),
-          where("email", "==", mail.value, password.value)
-        );
-        const unsubscribe = onSnapshot(q, (querySnapshot) => {
-          const auto = [];
-          querySnapshot.forEach((doc) => {
-            auto.push(doc.data());
-            if (
-              mail.value === doc.data().email &&
-              password.value === doc.data().password &&
-              doc.data().status === "admins"
-            ) {
-              alert("bienvenue admin");
-              window.location.href = "admin.html";
-            } else if (
-              mail.value === doc.data().email &&
-              password.value === doc.data().password &&
-              doc.data().status === "users"
-            ) {
-              alert("bienvenue user ");
-              window.location.href = "user.html";
-            } else if (
-              mail.value === doc.data().email &&
-              password.value === doc.data().password &&
-              doc.data().status === "super"
-            ) {
-              alert("bienvenue super admin");
-              window.location.href = "super.html";
-            } else {
-              alert(
-                "desole nous avons pas dinformation similaire dans notre base"
-              );
-            }
-          });
-        });
+        if (mail.value != "" && password.value != "") {
+          e.preventDefault();
+          const authVerifie = tab.find(
+            (el) => el.mail === mail.value && el.password === password.value
+          );
+          // console.log(authVerifie);
+          if (authVerifie.status == "admins") {
+            window.location.href = "admin.html";
+            // alert("Connexion réussie !");
+          } else if (authVerifie.status === "users") {
+            window.location.href = "user.html";
+            // alert("Connexion réussie !");
+          } else if (authVerifie.status === "super") {
+            window.location.href = "super.html";
+            // alert("Connexion réussie !");
+          } else {
+            alert(
+              "Desole nous avons pas d informations similaire dans notre base."
+            );
+          }
+        } else {
+          alert("Error");
+        }
       }
     </script>
   </body>
